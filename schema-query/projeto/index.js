@@ -1,5 +1,11 @@
 const { ApolloServer, gql } = require('apollo-server')
 
+//* Arrays que contem objetos
+const perfis = [
+    { id: 1, nome: 'Comum' },
+    { id: 2, nome: 'Administrador' }
+]
+
 const usuarios = [{
     id: 1, 
     nome: 'Leandro',
@@ -16,17 +22,26 @@ const usuarios = [{
     email: 'roberta@gmail.com',
     idade: 28
 }]
-// gql - taget template
-const typeDefs = gql`
+
+
+//* Tipos
+const typeDefs = gql` # gql - taget template
     scalar Date # definiição de um tipo
 
     # Pontos de entradas da API
+
     type Produto {
         nome: String!
         preco: Float!
         desconto: Float
         precoComDesconto: Float!
     }
+
+    type Perfil {
+        nome: String
+        id: Int
+    }
+
     type Usuario {
         id: Int!
         nome: String!
@@ -44,10 +59,13 @@ const typeDefs = gql`
         numerosMegaSena: [Int!]! # retornar um array
         usuarios: [Usuario]
         usuario(id: Int): Usuario
-
+        perfis: [Perfil]
+        perfil(id: Int): Perfil
     }
 `
-// função que recebe parametros
+
+//* Resolvers
+// função que pode receber parametros
 const resolvers = {
     // consultas
     Produto: {
@@ -97,10 +115,20 @@ const resolvers = {
             return usuarios 
         }, 
         // o primeiro parametro de um resolver, sempre é um objeto. 
-        usuario(_, args) {
-            const selecionados = usuarios.filter(u => u.id === args.id)
+        usuario(_, { id }) {
+            const selecionados = usuarios.filter(u => u.id === id)
             return selecionados ? selecionados[0] : null
-        }
+        }, 
+
+        perfis(){
+            return perfis
+        }, 
+
+        perfil(_, { id}) {
+            const selecionados = perfis.filter(p => p.id === id)
+            return selecionados ? selecionados[0] : null
+        },
+        
     }
 }
 
