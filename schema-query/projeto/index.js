@@ -10,17 +10,22 @@ const usuarios = [{
     id: 1, 
     nome: 'Leandro',
     email: 'leandro@gmail.com',
-    idade: 23
+    idade: 23,
+    perfil_id: 1
 }, {
     id: 2, 
     nome: 'Lara',
     email: 'lara@gmail.com',
-    idade: 26
+    idade: 26,
+    perfil_id: 2
+
 }, {
     id: 3, 
     nome: 'Roberta',
     email: 'roberta@gmail.com',
-    idade: 28
+    idade: 28,
+    perfil_id: 1
+
 }]
 
 
@@ -49,6 +54,7 @@ const typeDefs = gql` # gql - taget template
         idade: Int 
         salario: Float
         vip: Boolean
+        perfil: Perfil
     }
     
     type Query {
@@ -80,6 +86,10 @@ const resolvers = {
     Usuario: {
         salario(usuario) {
             return usuario.salario_real
+        },
+        perfil(usuario){
+            const selecionados = perfis.filter(p => p.id === usuario.perfil_id)
+            return selecionados ? selecionados[0] : null
         }
     },
     Query: {
