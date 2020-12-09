@@ -1,5 +1,21 @@
 const { ApolloServer, gql } = require('apollo-server')
 
+const usuarios = [{
+    id: 1, 
+    nome: 'Leandro',
+    email: 'leandro@gmail.com',
+    idade: 23
+}, {
+    id: 2, 
+    nome: 'Lara',
+    email: 'lara@gmail.com',
+    idade: 26
+}, {
+    id: 3, 
+    nome: 'Roberta',
+    email: 'roberta@gmail.com',
+    idade: 28
+}]
 // gql - taget template
 const typeDefs = gql`
     scalar Date # definiição de um tipo
@@ -26,6 +42,7 @@ const typeDefs = gql`
         usuarioLogado: Usuario
         produtoEmDestaque: Produto
         numerosMegaSena: [Int!]! # retornar um array
+        usuarios: [Usuario]
 
     }
 `
@@ -74,6 +91,9 @@ const resolvers = {
             // return [4, 6, 58, 21, 66, 50]
             const crescente = (a,b) => a - b 
             return Array(6).fill(0).map(n => parseInt(Math.random()* 60 + 1)).sort(crescente)
+        },
+        usuarios(){
+            return usuarios 
         }
     }
 }
