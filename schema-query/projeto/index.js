@@ -28,7 +28,7 @@ const typeDefs = gql`
         precoComDesconto: Float!
     }
     type Usuario {
-        id: ID!
+        id: Int!
         nome: String!
         email: String!
         idade: Int 
@@ -43,6 +43,7 @@ const typeDefs = gql`
         produtoEmDestaque: Produto
         numerosMegaSena: [Int!]! # retornar um array
         usuarios: [Usuario]
+        usuario(id: Int): Usuario
 
     }
 `
@@ -94,6 +95,11 @@ const resolvers = {
         },
         usuarios(){
             return usuarios 
+        }, 
+        // o primeiro parametro de um resolver, sempre é um objeto. 
+        usuario(_, args) {
+            const selecionados = usuarios.filter(u => u.id === args.id)
+            return selecionados ? selecionados[0] : null
         }
     }
 }
