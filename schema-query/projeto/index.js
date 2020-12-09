@@ -5,6 +5,12 @@ const typeDefs = gql`
     scalar Date # definiição de um tipo
 
     # Pontos de entradas da API
+    type Produto {
+        nome: String!
+        preco: Float!
+        desconto: Float
+        precoComDesconto: Float!
+    }
     type Usuario {
         id: ID!
         nome: String!
@@ -18,11 +24,21 @@ const typeDefs = gql`
         ola: String! # consulta que retorna string
         horaAtual: Date!
         usuarioLogado: Usuario
+        produtoEmDestaque: Produto
     }
 `
 // função que recebe parametros
 const resolvers = {
     // consultas
+    Produto: {
+        precoComDesconto(produto){
+            if(produto.desconto) {
+                return produto.preco*(1 - produto.desconto)
+            } else {
+                return produto.preco
+            }
+        }
+    },
     Usuario: {
         salario(usuario) {
             return usuario.salario_real
@@ -43,6 +59,13 @@ const resolvers = {
                 idade: 24,
                 salario_real: 100000.50,
                 vip: true,
+            }
+        },
+        produtoEmDestaque(){
+            return {
+                nome: 'Geladeira',
+                preco: 1000.00,
+                desconto: 0.10,
             }
         }
     }
