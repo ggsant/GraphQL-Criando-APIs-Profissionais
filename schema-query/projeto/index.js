@@ -25,6 +25,8 @@ const typeDefs = gql`
         horaAtual: Date!
         usuarioLogado: Usuario
         produtoEmDestaque: Produto
+        numerosMegaSena: [Int!]! # retornar um array
+
     }
 `
 // função que recebe parametros
@@ -67,6 +69,11 @@ const resolvers = {
                 preco: 1000.00,
                 desconto: 0.10,
             }
+        }, 
+        numerosMegaSena(){
+            // return [4, 6, 58, 21, 66, 50]
+            const crescente = (a,b) => a - b 
+            return Array(6).fill(0).map(n => parseInt(Math.random()* 60 + 1)).sort(crescente)
         }
     }
 }
